@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colors (overridden at runtime from site.theme.primary) */
+  --color-brand-red: #2563eb;          /* primary — header / buttons / accents */
+  --color-brand-red-dark: #1d4ed8;
+  --color-brand-blue: #00509e;         /* secondary accent */
+  --color-brand-blue-dark: #013f7c;
+  --color-brand-blue-light: #1e73be;   /* link blue */
+  --color-brand-gold: #d4af37;
+  --color-ink: #444444;
+  --color-heading: #555555;
+  --color-muted: #6f6f6f;              /* AA: 5.0:1 on #fff, 4.65:1 on #f5f6f8 */
+  --color-soft: #f5f6f8;
+  --color-line: #e3e6ea;
+
+  --font-sans: var(--font-heebo), "Open Sans", system-ui, sans-serif;
+
+  --radius-card: 0.5rem;
+  --shadow-card: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+  --shadow-pop: 0 10px 30px rgba(16,24,40,.16);
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Container */
+.container-x {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 768px) {
+  .container-x { padding-inline: 1.5rem; }
+}
+
+/* Star pattern background used on red strip + footer (faithful motif) */
+.stars-bg {
+  background-color: var(--color-brand-red);
+  background-image: radial-gradient(rgba(255,255,255,.18) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+.card-hover { transition: transform .2s ease, box-shadow .2s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-pop); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Section heading with centered title + side rules (faithful to original) */
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  text-align: center;
+}
+.section-title::before,
+.section-title::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--color-line);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .45s ease both; }
+
+/* Cart attention animation — runs while items wait for checkout */
+@keyframes cartNudge {
+  0%, 45%, 100% { transform: translateY(0) rotate(0) scale(1); }
+  50% { transform: translateY(-1px) rotate(0) scale(1.12); }
+  56% { transform: translateY(-4px) rotate(-12deg) scale(1.12); }
+  64% { transform: translateY(-4px) rotate(12deg) scale(1.12); }
+  72% { transform: translateY(-3px) rotate(-8deg) scale(1.08); }
+  80% { transform: translateY(-2px) rotate(5deg) scale(1.04); }
+  88% { transform: translateY(0) rotate(0) scale(1); }
+}
+.cart-nudge { animation: cartNudge 2s ease-in-out infinite; transform-origin: 50% 65%; }
+
+@keyframes cartBadgePulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(196, 30, 58, .6); }
+  50% { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(196, 30, 58, 0); }
+}
+.cart-badge-pulse { animation: cartBadgePulse 1.3s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-nudge, .cart-badge-pulse { animation: none; }
+}
+
+/* Share bar — elegant outline icon buttons */
+.share-ico {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1.5px solid #e6e9ee;
+  color: #8a9099;
+  cursor: pointer;
+  transition: transform .18s cubic-bezier(.34, 1.56, .64, 1), border-color .18s, color .18s, box-shadow .18s;
+}
+.share-ico svg { width: 1.18rem; height: 1.18rem; }
+.share-ico:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px rgba(20, 30, 50, .12); }
+.share-ico--wa:hover { border-color: #25D366; color: #25D366; }
+.share-ico--fb:hover { border-color: #1877F2; color: #1877F2; }
+.share-ico--ig:hover { border-color: #E1306C; color: #E1306C; }
+.share-ico--cp:hover { border-color: #00509e; color: #00509e; }
+.share-ico:focus-visible { outline: 2px solid #00509e; outline-offset: 2px; }
+
+/* Homepage share band — soft cream card with a thin gold top line */
+.share-band {
+  position: relative;
+  border-radius: 1.1rem;
+  padding: 1.9rem 1.75rem;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fffdf8 0%, #fbf6ec 100%);
+  border: 1px solid #efe6cf;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+}
+.share-band::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+/* Copy / share confirmation toast */
+.share-toast {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  background: #2f3338;
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: .6rem 1.1rem;
+  border-radius: .7rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+  animation: fadeUp .25s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-ico:hover { transform: none; }
+}
+
+/* Product description (WooCommerce HTML) */
+.prose-rtl img { max-width: 100%; height: auto; margin: .75rem auto; }
+.prose-rtl p { margin: .6rem 0; }
+.prose-rtl ul { list-style: disc; padding-inline-start: 1.4rem; margin: .6rem 0; }
+.prose-rtl ol { list-style: decimal; padding-inline-start: 1.4rem; margin: .6rem 0; }
+.prose-rtl h2, .prose-rtl h3 { font-weight: 700; color: var(--color-heading); margin: 1rem 0 .4rem; }
+.prose-rtl table { width: 100%; border-collapse: collapse; margin: .8rem 0; }
+.prose-rtl td, .prose-rtl th { border: 1px solid var(--color-line); padding: .4rem .6rem; }
+.prose-rtl a { color: var(--color-brand-red); }
+
+/* Global keyboard-focus visibility (accessibility) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #00509e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}

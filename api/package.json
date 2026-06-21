@@ -1,0 +1,14 @@
+{
+  "name": "ecom-store-admin-api",
+  "version": "1.0.0",
+  "description": "Azure Functions API for the store admin panel (commits content back to GitHub).",
+  "type": "module",
+  "main": "src/functions/*.mjs",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "google-auth-library": "^9.14.1"
+  }
+}

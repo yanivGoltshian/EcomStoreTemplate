@@ -1,0 +1,7 @@
+# Azure Functions (admin write APIs) — not for Vercel; they run on Azure
+/api
+# Azure SWA + CI artifacts not needed by Vercel
+staticwebapp.config.json
+/.github
+# Local static export output (Vercel rebuilds)
+/out

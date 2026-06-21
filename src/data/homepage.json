@@ -1,0 +1,68 @@
+{
+  "announcement": "משלוח לכל הארץ · שירות לקוחות · הזמנה טלפונית",
+  "topbarPhone": "00-0000000",
+  "hero": {
+    "image": "/images/banners/hero.jpg",
+    "alt": "חנות לדוגמה — באנר ראשי הניתן להחלפה דרך ממשק הניהול",
+    "href": "/category/100/"
+  },
+  "promoTiles": [],
+  "sections": [
+    {
+      "id": "s-home",
+      "title": "מוצרים לבית",
+      "icon": "🏠",
+      "categoryId": 100,
+      "limit": 12,
+      "layout": "carousel"
+    },
+    {
+      "id": "s-electronics",
+      "title": "אלקטרוניקה",
+      "icon": "🔌",
+      "categoryId": 200,
+      "limit": 12,
+      "layout": "carousel"
+    },
+    {
+      "id": "s-fashion",
+      "title": "אופנה",
+      "icon": "👜",
+      "categoryId": 300,
+      "limit": 12,
+      "layout": "carousel"
+    },
+    {
+      "id": "s-leisure",
+      "title": "פנאי",
+      "icon": "⚽",
+      "categoryId": 400,
+      "limit": 12,
+      "layout": "carousel"
+    }
+  ],
+  "dealsCube": {
+    "enabled": true,
+    "intervalMs": 5000,
+    "faces": [
+      {
+        "id": "deal-1005",
+        "productId": 1005,
+        "title": "אוזניות אלחוטיות לדוגמה",
+        "image": "/images/placeholder.svg",
+        "originalPrice": 199,
+        "dealPrice": 149,
+        "href": "/product/1005/"
+      },
+      {
+        "id": "deal-1010",
+        "productId": 1010,
+        "title": "תיק גב לדוגמה",
+        "image": "/images/placeholder.svg",
+        "originalPrice": 119,
+        "dealPrice": 89,
+        "href": "/product/1010/"
+      }
+    ]
+  }
+}

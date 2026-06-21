@@ -1,0 +1,67 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    # Azure Static Web Apps allows only one deployment at a time. Rapid admin
+    # commits (e.g. an image upload + a homepage save land seconds apart) each
+    # trigger a deploy; without serialization a newer deploy CANCELS the older
+    # in-progress one, which marks the run "failed" and emails the owner a scary
+    # "Run failed" notice even though the build itself succeeded. Queue the
+    # deploys instead (cancel-in-progress: false) so every commit publishes in
+    # order and no run is cancelled.
+    concurrency:
+      group: swa-deploy-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build and Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          api_location: "api"
+          output_location: "out"
+          app_build_command: "npm run build"
+        env:
+          # Persistence backend for the admin API (commits content back to this repo).
+          GITHUB_REPO: ${{ secrets.STORE_GITHUB_REPO }}
+          GITHUB_BRANCH: main
+
+  close_pull_request:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"

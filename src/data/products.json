@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1001,
+    "name": "ספל קרמיקה לדוגמה",
+    "model": "DEMO-MUG",
+    "price": 39,
+    "regularPrice": 39,
+    "salePrice": 39,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      110,
+      100
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1002,
+    "name": "סט סכו\"ם דמו (16 חלקים)",
+    "model": "DEMO-CUT16",
+    "price": 89,
+    "regularPrice": 89,
+    "salePrice": 89,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      110,
+      100
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1003,
+    "name": "מנורת שולחן לדוגמה",
+    "model": "DEMO-LAMP",
+    "price": 129,
+    "regularPrice": 129,
+    "salePrice": 129,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      120,
+      100
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1004,
+    "name": "כרית נוי לדוגמה",
+    "model": "DEMO-PILLOW",
+    "price": 59,
+    "regularPrice": 59,
+    "salePrice": 59,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      120,
+      100
+    ],
+    "inStock": false,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1005,
+    "name": "אוזניות אלחוטיות לדוגמה",
+    "model": "DEMO-EAR",
+    "price": 149,
+    "regularPrice": 199,
+    "salePrice": 149,
+    "onSale": true,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      210,
+      200
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1006,
+    "name": "רמקול נייד לדוגמה",
+    "model": "DEMO-SPK",
+    "price": 159,
+    "regularPrice": 159,
+    "salePrice": 159,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      210,
+      200
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1007,
+    "name": "מטען נייד לדוגמה",
+    "model": "DEMO-PWR",
+    "price": 79,
+    "regularPrice": 79,
+    "salePrice": 79,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      220,
+      200
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1008,
+    "name": "כבל USB-C לדוגמה",
+    "model": "DEMO-USBC",
+    "price": 25,
+    "regularPrice": 25,
+    "salePrice": 25,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      220,
+      200
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1009,
+    "name": "חולצת טי לדוגמה",
+    "model": "DEMO-TEE",
+    "price": 49,
+    "regularPrice": 49,
+    "salePrice": 49,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      310,
+      300
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1010,
+    "name": "תיק גב לדוגמה",
+    "model": "DEMO-BAG",
+    "price": 89,
+    "regularPrice": 119,
+    "salePrice": 89,
+    "onSale": true,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      320,
+      300
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1011,
+    "name": "כדורגל לדוגמה",
+    "model": "DEMO-BALL",
+    "price": 69,
+    "regularPrice": 69,
+    "salePrice": 69,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      410,
+      400
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  },
+  {
+    "id": 1012,
+    "name": "משחק קופסה לדוגמה",
+    "model": "DEMO-GAME",
+    "price": 99,
+    "regularPrice": 99,
+    "salePrice": 99,
+    "onSale": false,
+    "image": "/images/placeholder.svg",
+    "categoryIds": [
+      420,
+      400
+    ],
+    "inStock": true,
+    "description": "מוצר לדוגמה. החליפו את הטקסט, התמונה והמחיר דרך ממשק הניהול."
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+
+    "GOOGLE_CLIENT_ID": "REPLACE_WITH_YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com",
+    "ADMIN_EMAILS": "admin1@gmail.com,admin2@gmail.com",
+
+    "GITHUB_TOKEN": "REPLACE_WITH_FINE_GRAINED_PAT_CONTENTS_READ_WRITE",
+    "GITHUB_REPO": "your-github-username/your-store-repo",
+    "GITHUB_BRANCH": "main",
+
+    "ADMIN_DEV": "0"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}

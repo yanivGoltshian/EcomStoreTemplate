@@ -1,0 +1,78 @@
+[
+  {
+    "id": 100,
+    "name": "מוצרים לבית",
+    "slug": "home",
+    "icon": "🏠",
+    "count": 4,
+    "subs": [
+      {
+        "id": 110,
+        "name": "מטבח",
+        "count": 2
+      },
+      {
+        "id": 120,
+        "name": "סלון",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "id": 200,
+    "name": "אלקטרוניקה",
+    "slug": "electronics",
+    "icon": "🔌",
+    "count": 4,
+    "subs": [
+      {
+        "id": 210,
+        "name": "שמע",
+        "count": 2
+      },
+      {
+        "id": 220,
+        "name": "אביזרים",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "id": 300,
+    "name": "אופנה",
+    "slug": "fashion",
+    "icon": "👜",
+    "count": 2,
+    "subs": [
+      {
+        "id": 310,
+        "name": "ביגוד",
+        "count": 1
+      },
+      {
+        "id": 320,
+        "name": "תיקים",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "id": 400,
+    "name": "פנאי",
+    "slug": "leisure",
+    "icon": "⚽",
+    "count": 2,
+    "subs": [
+      {
+        "id": 410,
+        "name": "ספורט",
+        "count": 1
+      },
+      {
+        "id": 420,
+        "name": "משחקים",
+        "count": 1
+      }
+    ]
+  }
+]

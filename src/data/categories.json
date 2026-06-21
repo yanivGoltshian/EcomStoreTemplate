@@ -1,0 +1,110 @@
+[
+  {
+    "id": 100,
+    "name": "מוצרים לבית",
+    "slug": "home",
+    "parent": 0,
+    "count": 4,
+    "icon": "🏠",
+    "isTop": true
+  },
+  {
+    "id": 110,
+    "name": "מטבח",
+    "slug": "kitchen",
+    "parent": 100,
+    "count": 2,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 120,
+    "name": "סלון",
+    "slug": "living-room",
+    "parent": 100,
+    "count": 2,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 200,
+    "name": "אלקטרוניקה",
+    "slug": "electronics",
+    "parent": 0,
+    "count": 4,
+    "icon": "🔌",
+    "isTop": true
+  },
+  {
+    "id": 210,
+    "name": "שמע",
+    "slug": "audio",
+    "parent": 200,
+    "count": 2,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 220,
+    "name": "אביזרים",
+    "slug": "accessories",
+    "parent": 200,
+    "count": 2,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 300,
+    "name": "אופנה",
+    "slug": "fashion",
+    "parent": 0,
+    "count": 2,
+    "icon": "👜",
+    "isTop": true
+  },
+  {
+    "id": 310,
+    "name": "ביגוד",
+    "slug": "clothing",
+    "parent": 300,
+    "count": 1,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 320,
+    "name": "תיקים",
+    "slug": "bags",
+    "parent": 300,
+    "count": 1,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 400,
+    "name": "פנאי",
+    "slug": "leisure",
+    "parent": 0,
+    "count": 2,
+    "icon": "⚽",
+    "isTop": true
+  },
+  {
+    "id": 410,
+    "name": "ספורט",
+    "slug": "sport",
+    "parent": 400,
+    "count": 1,
+    "icon": "",
+    "isTop": false
+  },
+  {
+    "id": 420,
+    "name": "משחקים",
+    "slug": "games",
+    "parent": 400,
+    "count": 1,
+    "icon": "",
+    "isTop": false
+  }
+]

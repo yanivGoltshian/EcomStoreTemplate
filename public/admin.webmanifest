@@ -1,0 +1,22 @@
+{
+  "name": "ניהול החנות",
+  "short_name": "ניהול",
+  "description": "מערכת ניהול התוכן של החנות — עריכת מוצרים, מחירים, תמונות, קטגוריות ועמוד הבית.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/admin/?source=pwa",
+  "scope": "/admin/",
+  "id": "/admin",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2563eb",
+  "theme_color": "#2563eb",
+  "categories": ["business", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "/admin-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/admin-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/admin-icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/admin-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

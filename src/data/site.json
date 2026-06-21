@@ -1,0 +1,64 @@
+{
+  "name": "החנות שלי",
+  "nameEn": "My Store",
+  "legalName": "החנות שלי",
+  "vatId": "",
+  "tagline": "חנות אונליין לדוגמה",
+  "lang": "he",
+  "dir": "rtl",
+  "locale": "he-IL",
+  "description": "",
+  "keywords": [],
+  "adminHost": "",
+  "url": "https://example.com",
+  "deployUrl": "https://example.com",
+  "ogImage": "/og-image.jpg",
+  "theme": {
+    "primary": "#2563eb"
+  },
+  "logo": {
+    "image": "/images/brand/logo.png",
+    "alt": "החנות שלי"
+  },
+  "googleSiteVerification": "",
+  "phone": "00-0000000",
+  "phoneRaw": "000000000",
+  "whatsapp": "972500000000",
+  "whatsappDisplay": "050-000-0000",
+  "email": "",
+  "facebook": "",
+  "instagram": "",
+  "address": {
+    "street": "רחוב לדוגמה 1",
+    "streetEn": "1 Example St",
+    "city": "תל אביב",
+    "cityEn": "Tel Aviv",
+    "postalCode": "",
+    "country": "IL",
+    "full": "רחוב לדוגמה 1, תל אביב"
+  },
+  "hours": "א׳–ה׳ 09:00–18:00 · ו׳ 09:00–13:00 · שבת סגור",
+  "openingHours": [
+    {
+      "days": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "days": [
+        "Friday"
+      ],
+      "opens": "09:00",
+      "closes": "13:00"
+    }
+  ],
+  "analytics": {
+    "googleAnalyticsId": ""
+  }
+}
