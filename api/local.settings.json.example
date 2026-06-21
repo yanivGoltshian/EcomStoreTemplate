@@ -11,6 +11,10 @@
     "GITHUB_REPO": "your-github-username/your-store-repo",
     "GITHUB_BRANCH": "main",
 
+    "BREVO_API_KEY": "",
+    "BREVO_LIST_ID": "",
+    "ALLOWED_ORIGINS": "",
+
     "ADMIN_DEV": "0"
   },
   "Host": {

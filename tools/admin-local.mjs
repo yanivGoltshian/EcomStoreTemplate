@@ -179,6 +179,63 @@ async function handleApi(req, res, url) {
         }
       }
     }
+    // /api/newsletter-settings  (master on/off switch + Brevo list config)
+    if (seg[0] === "newsletter-settings" && !seg[1]) {
+      const brevoConfigured = !!process.env.BREVO_API_KEY;
+      if (method === "GET") {
+        const s = await store.getNewsletterSettings();
+        return send(res, 200, { ...s, brevoConfigured });
+      }
+      if (method === "PUT") {
+        const saved = await store.putNewsletterSettings(await readJsonBody(req));
+        return send(res, 200, { ...saved, brevoConfigured });
+      }
+    }
+    // /api/newsletter-subscribe  (PUBLIC signup; mirrors the SWA Function)
+    if (seg[0] === "newsletter-subscribe" && !seg[1]) {
+      if (method === "OPTIONS") {
+        res.writeHead(204);
+        return res.end();
+      }
+      if (method === "POST") {
+        const body = await readJsonBody(req).catch(() => ({}));
+        if (body && body.company) return send(res, 200, { ok: true }); // honeypot
+        const email = String((body && body.email) || "").trim();
+        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!valid) return send(res, 400, { error: "כתובת אימייל לא תקינה" });
+        const settings = await store.getNewsletterSettings();
+        if (!settings.enabled)
+          return send(res, 403, { error: "ההרשמה לניוזלטר אינה פעילה" });
+        const key = process.env.BREVO_API_KEY;
+        if (!key) {
+          // No local Brevo key: simulate success so the form flow is testable.
+          console.log(`[newsletter-local] would subscribe: ${email}`);
+          return send(res, 200, { ok: true, simulated: true });
+        }
+        try {
+          const r = await fetch("https://api.brevo.com/v3/contacts", {
+            method: "POST",
+            headers: {
+              "api-key": key,
+              "content-type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              listIds: settings.brevoListId ? [settings.brevoListId] : undefined,
+              updateEnabled: true,
+            }),
+          });
+          if (r.ok) return send(res, 200, { ok: true });
+          const j = await r.json().catch(() => ({}));
+          if (j && j.code === "duplicate_parameter")
+            return send(res, 200, { ok: true });
+          return send(res, 502, { error: "שגיאה בשמירת ההרשמה" });
+        } catch {
+          return send(res, 502, { error: "שגיאה בשמירת ההרשמה" });
+        }
+      }
+    }
     // /api/upload
     if (seg[0] === "upload" && method === "POST") {
       const result = await store.uploadImage(await readJsonBody(req));

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { nav, site, waLink, telLink, wazeLink } from "@/lib/data";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 const useful = [
   { label: "דף הבית", href: "/" },
@@ -120,6 +121,8 @@ export default function SiteFooter() {
           </div>
         </div>
       </div>
+
+      <NewsletterSignup />
 
       <div className="border-t border-white/15">
         <div className="container-x py-4 text-center text-[0.72rem] text-white/70">

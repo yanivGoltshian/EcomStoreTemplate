@@ -257,6 +257,10 @@ repo, which triggers the rebuild.
 | `GITHUB_REPO`                     | SWA app settings + `.env`     | `owner/repo` to commit content to        |
 | `GITHUB_BRANCH`                   | SWA app settings + `.env`     | Branch to commit to (e.g. `main`)        |
 | `AZURE_STATIC_WEB_APPS_API_TOKEN` | GitHub repo secret            | Lets the workflow deploy to SWA          |
+| `BREVO_API_KEY`                   | SWA app settings (secret)     | **Newsletter only** — Brevo send key     |
+| `BREVO_LIST_ID`                   | SWA app settings / admin JSON | **Newsletter only** — Brevo contact‑list id (admin JSON wins) |
+| `ALLOWED_ORIGINS`                 | SWA app settings              | **Newsletter, split‑host only** — extra CORS origins allowed to POST the subscribe Function |
+| `NEXT_PUBLIC_API_BASE`            | build env (split‑host only)   | **Newsletter, split‑host only** — function‑host origin baked into the form |
 | `ADMIN_DEV`                       | `.env` (local only)           | `1` bypasses Google login locally        |
 | `REPO_ROOT`, `ADMIN_PORT`, `NEXT_ORIGIN` | `.env` (local only)    | Local admin harness configuration        |
 
@@ -271,6 +275,51 @@ If you provide a **GA4 measurement id** during setup (or set
 every page. Leave it blank to ship **no analytics/trackers at all**. The Content‑Security‑Policy
 in `staticwebapp.config.json` already allows the Google Analytics/Tag Manager domains, so they
 load only when an id is set and stay inert otherwise.
+
+---
+
+## Newsletter signup (Brevo) — ships OFF
+
+An optional email‑newsletter signup lives in the footer. It is **disabled by default** —
+nothing newsletter‑related renders until the owner turns it on. Sending, the contact list,
+and the legal unsubscribe link are handled by **[Brevo](https://www.brevo.com/)** (free tier:
+300 emails/day, unlimited contacts), so it stays $0/mo.
+
+How it works:
+
+- `src/data/newsletter-settings.json` (`enabled`) is the **master switch**, read at build time
+  (`src/lib/newsletter.ts` → `newsletterEnabled`). When OFF, `NewsletterSignup` renders nothing.
+- The form POSTs to the `newsletter-subscribe` Azure Function, which holds the secret
+  `BREVO_API_KEY`, re‑checks the switch at runtime, and calls the Brevo API. The key never
+  reaches the browser.
+- **Single‑host** (storefront + API on the same origin): the form posts to same‑origin
+  `/api/newsletter-subscribe` — nothing extra to configure.
+- **Split‑host** (public storefront on a host with no Functions, e.g. Vercel, + the API on
+  Azure SWA): set `NEXT_PUBLIC_API_BASE` to the SWA origin so the form posts cross‑origin, and
+  add the public origin(s) to `ALLOWED_ORIGINS` on the SWA so CORS lets them through.
+
+### Activate it in one command
+
+```bash
+npm run newsletter:setup          # interactive: prompts for the Brevo key
+# or, fully non-interactive:
+BREVO_API_KEY=xkeysib-… npm run newsletter:setup -- --enable --yes
+```
+
+The script (`tools/newsletter-setup.mjs`) automates every owner step:
+
+1. validates your **Brevo API key** ([get one here](https://app.brevo.com/settings/keys/api));
+2. **creates a Brevo contact list** (or reuses `--list-id <n>`) and captures its id;
+3. sets the **Azure SWA app settings** `BREVO_API_KEY` (secret) + `BREVO_LIST_ID`
+   (auto‑discovers the SWA via `az`; needs `az login` first);
+4. with `--enable`, flips the master switch ON, commits `newsletter-settings.json`, and
+   pushes — your host rebuilds in ~1–2 min and the form appears site‑wide.
+
+It is idempotent and **never prints or commits the API key**. Useful flags: `--config-only`
+(set secrets but stay OFF), `--dry-run`, `--list-id <n>`, `--swa-name/--swa-rg` (skip
+auto‑discovery), `--help`. You can also flip the toggle by hand in the admin → **ניוזלטר** tab
+once the SWA secrets are set. The only true manual step is creating a free Brevo account to
+get the API key.
 
 ---
 
@@ -295,6 +344,7 @@ load only when an id is set and stay inert otherwise.
 | `npm run dev:api` | Admin harness alone — needs `npm run dev` running (`:8787/admin/`) |
 | `npm run build`   | Static export to `./out` (runs the prebuild search index)|
 | `npm run preview` | Serve the built `./out` + admin harness (`:8787`)        |
+| `npm run newsletter:setup` | Activate the optional Brevo newsletter (Brevo + SWA settings; `--enable` to go live) |
 | `npm run start`   | Serve the production build                               |
 | `npm run lint`    | ESLint                                                   |
 

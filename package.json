@@ -10,6 +10,7 @@
     "prebuild": "node scripts/gen-search-index.mjs",
     "build": "next build",
     "preview": "node tools/admin-local.mjs",
+    "newsletter:setup": "node tools/newsletter-setup.mjs",
     "start": "next start",
     "lint": "eslint"
   },
