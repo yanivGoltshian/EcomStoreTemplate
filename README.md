@@ -178,14 +178,27 @@ into the JSON shapes, downloading images into `public/images/`.
 ## Running locally
 
 ```bash
-npm run dev        # storefront only        → http://localhost:3000
-npm run dev:api    # admin harness + storefront → http://localhost:8787/admin/
-npm run build      # static export           → ./out
+npm install         # first time only
+
+npm run dev:full    # ⭐ storefront + admin together → http://localhost:8787/
+                    #    (admin panel at http://localhost:8787/admin/)
+
+npm run dev         # storefront only             → http://localhost:3000
+npm run build       # static export               → ./out
+npm run preview     # serve the built ./out + admin → http://localhost:8787/
 ```
 
-`npm run dev:api` runs `tools/admin-local.mjs`, which serves the `/api/*` write API against
-your **local filesystem** and proxies the Next site — so you can use the full admin offline.
-With `ADMIN_DEV=1` (set by the wizard in `.env`) Google login is bypassed locally.
+**Recommended:** `npm run dev:full` — one command that starts the Next dev server (`:3000`,
+hot reload) **and** the zero‑dep admin harness (`:8787`) together. Open
+`http://localhost:8787/` and the whole site works, admin included. Plain `npm run dev` does
+**not** serve `/api/*` (those are Azure Functions in production), so the admin panel 404s on
+its own — use `dev:full` (or `dev:api`) for admin work.
+
+`tools/admin-local.mjs` (used by `dev:full`/`dev:api`/`preview`) serves the `/api/*` write API
+against your **local filesystem** and proxies the Next site — so the full admin works offline.
+With `ADMIN_DEV=1` (set by the wizard in `.env`) Google login is bypassed locally, so you can
+edit products, prices, images, categories and the homepage with no cloud setup. Edits write to
+the real repo files and hot‑reload instantly.
 
 ---
 
@@ -277,10 +290,17 @@ load only when an id is set and stay inert otherwise.
 | Command           | What it does                                              |
 |-------------------|----------------------------------------------------------|
 | `npm run setup`   | Interactive store setup wizard (writes config files)     |
-| `npm run dev`     | Storefront dev server (`http://localhost:3000`)          |
-| `npm run dev:api` | Offline admin harness + storefront (`:8787/admin/`)      |
+| `npm run dev:full`| ⭐ Storefront **+ admin** together (`http://localhost:8787/`) |
+| `npm run dev`     | Storefront dev server only (`http://localhost:3000`)     |
+| `npm run dev:api` | Admin harness alone — needs `npm run dev` running (`:8787/admin/`) |
 | `npm run build`   | Static export to `./out` (runs the prebuild search index)|
+| `npm run preview` | Serve the built `./out` + admin harness (`:8787`)        |
 | `npm run start`   | Serve the production build                               |
 | `npm run lint`    | ESLint                                                   |
 
 Built with Next.js (App Router, static export), React, TypeScript, and Tailwind CSS.
+
+This template was generated with the **`low-cost-static-storefront`** GitHub Copilot CLI
+skill — a reusable playbook that encodes this entire architecture (JSON‑as‑database, the
+GitHub‑backed write API, browser‑side image optimization, the auth/CSP gotchas, and the
+$0 deploy model) so a new store can be scaffolded in minutes instead of rediscovered.
