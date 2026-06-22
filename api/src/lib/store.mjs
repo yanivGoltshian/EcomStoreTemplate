@@ -11,6 +11,8 @@ const PATHS = {
   categories: "src/data/categories.json",
   nav: "src/data/nav.json",
   descendants: "src/data/descendants.json",
+  coupons: "src/data/coupons.json",
+  couponSettings: "src/data/coupon-settings.json",
   newsletterSettings: "src/data/newsletter-settings.json",
 };
 
@@ -103,6 +105,123 @@ export async function putPagesMerge(incoming, changedKeys) {
     }
   }
   return be.writeJSON(PATHS.pages, merged, "admin: update content pages");
+}
+
+// ---------- coupons ----------
+// Coupons live in a single committed JSON array (no DB). Codes are public.
+export async function getCoupons() {
+  return getBackend()
+    .readJSON(PATHS.coupons)
+    .catch(() => []);
+}
+
+// ---------- coupon system master switch ----------
+// A tiny, separate settings file holds the global on/off flag for the WHOLE
+// coupon feature. Kept apart from coupons.json so toggling it never touches the
+// coupon CRUD path. When disabled, the storefront shows nothing coupon-related
+// (no homepage banner, no cart coupon field/discount) even if coupons exist.
+export async function getCouponSettings() {
+  const raw = await getBackend()
+    .readJSON(PATHS.couponSettings)
+    .catch(() => null);
+  // Default to enabled when the file is missing/malformed so existing stores
+  // keep working; only an explicit `false` turns the system off.
+  const enabled =
+    raw && typeof raw === "object" ? raw.enabled !== false : true;
+  return { enabled };
+}
+
+export async function putCouponSettings(obj) {
+  const settings = { enabled: !!(obj && obj.enabled) };
+  await getBackend().writeJSON(
+    PATHS.couponSettings,
+    settings,
+    `admin: ${settings.enabled ? "enable" : "disable"} coupon system`,
+  );
+  return settings;
+}
+
+function nextCouponId(list) {
+  return list.reduce((m, c) => Math.max(m, Number(c.id) || 0), 0) + 1;
+}
+
+function normalizeCoupon(input, id) {
+  const type = input.type === "fixed" ? "fixed" : "percent";
+  const scope = ["all", "category", "products"].includes(input.scope)
+    ? input.scope
+    : "all";
+  const code = String(input.code || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "");
+  return {
+    id,
+    code,
+    title: String(input.title || "").trim(),
+    type,
+    value: Math.max(0, Number(input.value) || 0),
+    scope,
+    categoryId: scope === "category" ? Number(input.categoryId) || 0 : 0,
+    productIds:
+      scope === "products" && Array.isArray(input.productIds)
+        ? input.productIds.map(Number).filter((n) => n > 0)
+        : [],
+    minSubtotal: Math.max(0, Number(input.minSubtotal) || 0),
+    startsAt: String(input.startsAt || "").trim(),
+    endsAt: String(input.endsAt || "").trim(),
+    active: input.active !== false,
+    visibility: input.visibility === "hidden" ? "hidden" : "public",
+    stackable: !!input.stackable,
+    terms: String(input.terms || "").trim(),
+  };
+}
+
+export async function createCoupon(input) {
+  const list = await getCoupons();
+  const id = nextCouponId(list);
+  const coupon = normalizeCoupon(input, id);
+  if (!coupon.code) throw new Error("יש להזין קוד קופון");
+  if (coupon.value <= 0) throw new Error("יש להזין ערך הנחה חיובי");
+  if (list.some((c) => c.code.toUpperCase() === coupon.code.toUpperCase()))
+    throw new Error("קוד קופון כבר קיים");
+  list.push(coupon);
+  await getBackend().writeJSON(PATHS.coupons, list, `admin: add coupon ${coupon.code}`);
+  return coupon;
+}
+
+export async function updateCoupon(id, patch) {
+  const list = await getCoupons();
+  const idx = list.findIndex((c) => String(c.id) === String(id));
+  if (idx < 0) return null;
+  const merged = normalizeCoupon({ ...list[idx], ...patch }, list[idx].id);
+  if (!merged.code) throw new Error("יש להזין קוד קופון");
+  if (merged.value <= 0) throw new Error("יש להזין ערך הנחה חיובי");
+  if (
+    list.some(
+      (c, i) => i !== idx && c.code.toUpperCase() === merged.code.toUpperCase(),
+    )
+  )
+    throw new Error("קוד קופון כבר קיים");
+  list[idx] = merged;
+  await getBackend().writeJSON(
+    PATHS.coupons,
+    list,
+    `admin: update coupon ${merged.code}`,
+  );
+  return merged;
+}
+
+export async function deleteCoupon(id) {
+  const list = await getCoupons();
+  const idx = list.findIndex((c) => String(c.id) === String(id));
+  if (idx < 0) return { ok: false };
+  const [removed] = list.splice(idx, 1);
+  await getBackend().writeJSON(
+    PATHS.coupons,
+    list,
+    `admin: delete coupon ${removed.code}`,
+  );
+  return { ok: true };
 }
 
 // ---------- categories ----------

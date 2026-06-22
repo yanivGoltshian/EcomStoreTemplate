@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import CategoryStrip from "@/components/CategoryStrip";
+import CouponBanner from "@/components/CouponBanner";
 import DealsCube from "@/components/DealsCube";
 import PromoTiles from "@/components/PromoTiles";
 import ValueProps from "@/components/ValueProps";
@@ -11,6 +12,8 @@ export default function Home() {
   return (
     <>
       <Hero />
+
+      <CouponBanner />
 
       <CategoryStrip />
       {homepage.dealsCube?.enabled && (homepage.dealsCube.faces?.length ?? 0) > 0 && (
@@ -54,6 +57,41 @@ export default function Home() {
             instagramUrl={site.instagram}
             shareTitle={`${site.name} — ${site.tagline}`}
           />
+          {site.googleReviewUrl ? (
+            <>
+              <div className="review-or">או</div>
+              <a
+                href={site.googleReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="review-cta"
+                aria-label={`דרגו את ${site.name} בגוגל`}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+                  <path
+                    fill="#4285F4"
+                    d="M23.5 12.27c0-.82-.07-1.6-.21-2.36H12v4.46h6.45a5.5 5.5 0 0 1-2.39 3.62v3h3.86c2.26-2.08 3.58-5.15 3.58-8.72Z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.24 0 5.96-1.08 7.95-2.91l-3.86-3c-1.07.72-2.45 1.15-4.09 1.15-3.14 0-5.8-2.12-6.75-4.98H1.26v3.09A12 12 0 0 0 12 24Z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.25 14.26a7.2 7.2 0 0 1 0-4.52V6.65H1.26a12 12 0 0 0 0 10.7l3.99-3.09Z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 4.74c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.26 6.65l3.99 3.09C6.2 6.86 8.86 4.74 12 4.74Z"
+                  />
+                </svg>
+                <span>דרגו אותנו ב־Google</span>
+                <span className="stars" aria-hidden>
+                  ★★★★★
+                </span>
+              </a>
+            </>
+          ) : null}
         </div>
       </section>
 

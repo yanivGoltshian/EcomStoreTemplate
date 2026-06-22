@@ -179,6 +179,34 @@ async function handleApi(req, res, url) {
         }
       }
     }
+    // /api/coupons  and  /api/coupons/{id}
+    if (seg[0] === "coupons") {
+      const id = seg[1];
+      if (!id) {
+        if (method === "GET") return send(res, 200, await store.getCoupons());
+        if (method === "POST") {
+          const created = await store.createCoupon(await readJsonBody(req));
+          return send(res, 201, created);
+        }
+      } else {
+        if (method === "PUT") {
+          const saved = await store.updateCoupon(id, await readJsonBody(req));
+          return saved ? send(res, 200, saved) : send(res, 404, { error: "Not found" });
+        }
+        if (method === "DELETE") {
+          const r = await store.deleteCoupon(id);
+          return r.ok ? send(res, 200, r) : send(res, 404, { error: "Not found" });
+        }
+      }
+    }
+    // /api/coupon-settings  (master on/off switch for the whole coupon system)
+    if (seg[0] === "coupon-settings" && !seg[1]) {
+      if (method === "GET") return send(res, 200, await store.getCouponSettings());
+      if (method === "PUT") {
+        const saved = await store.putCouponSettings(await readJsonBody(req));
+        return send(res, 200, saved);
+      }
+    }
     // /api/newsletter-settings  (master on/off switch + Brevo list config)
     if (seg[0] === "newsletter-settings" && !seg[1]) {
       const brevoConfigured = !!process.env.BREVO_API_KEY;

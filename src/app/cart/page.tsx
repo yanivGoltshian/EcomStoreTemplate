@@ -1,21 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { useCart } from "@/lib/cart";
 import { formatPrice, waLink, site } from "@/lib/data";
+import { evalCoupon, couponsEnabled } from "@/lib/coupons";
 
 export default function CartPage() {
-  const { items, total, count, setQty, removeItem, clear } = useCart();
+  const { items, total, count, couponCode, setCoupon, clearCoupon, setQty, removeItem, clear } =
+    useCart();
+  const [codeInput, setCodeInput] = useState("");
+
+  const couponEval = useMemo(() => {
+    if (!couponsEnabled || !couponCode) return null;
+    return evalCoupon(couponCode, {
+      lines: items.map((it) => ({ id: it.id, price: it.price, qty: it.qty })),
+      subtotal: total,
+    });
+  }, [couponCode, items, total]);
+
+  const discount = couponEval && couponEval.ok ? couponEval.discount : 0;
+  const netTotal = Math.max(0, total - discount);
+
+  function applyCode() {
+    const code = codeInput.trim();
+    if (!code) return;
+    setCoupon(code);
+    setCodeInput("");
+  }
 
   function buildWhatsappOrder() {
     const lines = items.map(
       (it) =>
         `• ${it.name}${it.model ? ` (${it.model})` : ""} ×${it.qty} — ${formatPrice(it.price * it.qty)}`,
     );
+    const couponLine =
+      couponEval && couponEval.ok
+        ? `\nקופון ${couponEval.coupon.code}: הנחה ${formatPrice(discount)}\nסה"כ לאחר הנחה: ${formatPrice(netTotal)}`
+        : "";
     const msg =
       `שלום ${site.name}, אשמח להזמין:\n` +
       lines.join("\n") +
-      `\n\nסה"כ: ${formatPrice(total)}\n\nשם:\nכתובת למשלוח/איסוף:\nטלפון:`;
+      `\n\nסה"כ: ${formatPrice(total)}` +
+      couponLine +
+      `\n\nשם:\nכתובת למשלוח/איסוף:\nטלפון:`;
     return `${waLink}?text=${encodeURIComponent(msg)}`;
   }
 
@@ -122,9 +150,69 @@ export default function CartPage() {
             <span>מוצרים ({count})</span>
             <span className="font-bold">{formatPrice(total)}</span>
           </div>
+
+          {/* Coupon */}
+          {couponsEnabled && (
+          <div className="mt-4 border-t pt-4">
+            {couponEval && couponEval.ok ? (
+              <div className="flex items-center justify-between rounded-md bg-soft px-3 py-2">
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-bold text-brand-red">
+                    🎟️ קופון {couponEval.coupon.code}
+                  </p>
+                  <p className="truncate text-[0.7rem] text-muted">{couponEval.coupon.title}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={clearCoupon}
+                  className="shrink-0 text-xs text-muted hover:text-brand-red"
+                >
+                  הסרה
+                </button>
+              </div>
+            ) : (
+              <div>
+                <label htmlFor="coupon" className="text-xs font-semibold text-heading">
+                  קוד קופון
+                </label>
+                <div className="mt-1 flex gap-2">
+                  <input
+                    id="coupon"
+                    value={codeInput}
+                    onChange={(e) => setCodeInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") applyCode();
+                    }}
+                    placeholder="הזינו קוד"
+                    dir="ltr"
+                    className="min-w-0 flex-1 rounded-md border px-3 py-2 text-sm focus-visible:border-brand-red"
+                  />
+                  <button
+                    type="button"
+                    onClick={applyCode}
+                    className="shrink-0 rounded-md bg-brand-red px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-red-dark"
+                  >
+                    החל
+                  </button>
+                </div>
+                {couponCode && couponEval && !couponEval.ok && (
+                  <p className="mt-1.5 text-[0.72rem] text-brand-red">{couponEval.reason}</p>
+                )}
+              </div>
+            )}
+          </div>
+          )}
+
+          {discount > 0 && (
+            <div className="mt-4 flex justify-between text-sm text-ink">
+              <span>הנחת קופון</span>
+              <span className="font-bold text-brand-red">−{formatPrice(discount)}</span>
+            </div>
+          )}
+
           <div className="mt-4 flex items-end justify-between border-t pt-4">
             <span className="text-sm font-bold text-heading">סה״כ לתשלום</span>
-            <span className="text-2xl font-extrabold text-brand-red">{formatPrice(total)}</span>
+            <span className="text-2xl font-extrabold text-brand-red">{formatPrice(netTotal)}</span>
           </div>
 
           <a
@@ -140,6 +228,7 @@ export default function CartPage() {
           </a>
           <p className="mt-3 text-center text-[0.72rem] text-muted">
             ההזמנה תישלח אלינו בוואטסאפ ונחזור אליכם לתיאום תשלום ומשלוח/איסוף.
+            {discount > 0 ? " ההנחה תאושר בעת סגירת ההזמנה." : ""}
           </p>
 
           <Link

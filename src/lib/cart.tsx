@@ -23,17 +23,22 @@ type CartContextValue = {
   items: CartItem[];
   count: number;
   total: number;
+  couponCode: string | null;
   addItem: (item: Omit<CartItem, "qty">, qty?: number) => void;
   removeItem: (id: number) => void;
   setQty: (id: number, qty: number) => void;
+  setCoupon: (code: string) => void;
+  clearCoupon: () => void;
   clear: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "store-cart-v1";
+const COUPON_KEY = "store-coupon-v1";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [couponCode, setCouponCode] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -46,6 +51,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore corrupt storage */
     }
+    try {
+      const code = localStorage.getItem(COUPON_KEY);
+      if (code) setCouponCode(code);
+    } catch {
+      /* ignore */
+    }
     setLoaded(true);
   }, []);
 
@@ -57,6 +68,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       /* ignore quota errors */
     }
   }, [items, loaded]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      if (couponCode) localStorage.setItem(COUPON_KEY, couponCode);
+      else localStorage.removeItem(COUPON_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, [couponCode, loaded]);
 
   const addItem = useCallback((item: Omit<CartItem, "qty">, qty = 1) => {
     setItems((prev) => {
@@ -80,14 +101,34 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const clear = useCallback(() => setItems([]), []);
+  const setCoupon = useCallback((code: string) => {
+    setCouponCode(code.trim().toUpperCase() || null);
+  }, []);
+
+  const clearCoupon = useCallback(() => setCouponCode(null), []);
+
+  const clear = useCallback(() => {
+    setItems([]);
+    setCouponCode(null);
+  }, []);
 
   const count = useMemo(() => items.reduce((n, p) => n + p.qty, 0), [items]);
   const total = useMemo(() => items.reduce((s, p) => s + p.price * p.qty, 0), [items]);
 
   const value = useMemo(
-    () => ({ items, count, total, addItem, removeItem, setQty, clear }),
-    [items, count, total, addItem, removeItem, setQty, clear],
+    () => ({
+      items,
+      count,
+      total,
+      couponCode,
+      addItem,
+      removeItem,
+      setQty,
+      setCoupon,
+      clearCoupon,
+      clear,
+    }),
+    [items, count, total, couponCode, addItem, removeItem, setQty, setCoupon, clearCoupon, clear],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

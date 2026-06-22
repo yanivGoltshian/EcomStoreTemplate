@@ -175,6 +175,13 @@ export default function BrandTab({
           <Field label="וואטסאפ (תצוגה)" value={site.whatsappDisplay} onChange={(v) => set("whatsappDisplay", v)} dir="ltr" />
           <Field label="אימייל" value={site.email} onChange={(v) => set("email", v)} dir="ltr" />
           <Field label="פייסבוק (URL)" value={site.facebook} onChange={(v) => set("facebook", v)} dir="ltr" />
+          <Field
+            label="קישור לביקורות Google"
+            value={site.googleReviewUrl ?? ""}
+            onChange={(v) => set("googleReviewUrl", v.trim() ? v.trim() : undefined)}
+            dir="ltr"
+            hint="הקישור לכתיבת ביקורת בגוגל. כשמלא — מופיע כפתור 'דרגו אותנו ב‑Google' בדף הבית ובפוטר. השאירו ריק כדי להסתיר אותו."
+          />
         </div>
       </section>
 

@@ -121,6 +121,7 @@ export type Site = {
   email: string;
   facebook: string;
   instagram: string;
+  googleReviewUrl?: string;
   address: SiteAddress;
   hours: string;
   openingHours: OpeningHours[];
@@ -172,4 +173,22 @@ export type ContentPages = {
   accessibility: LegalContentPage;
   about: AboutPageContent;
   contact: ContactPageContent;
+};
+
+export type Coupon = {
+  id: number;
+  code: string;
+  title: string;
+  type: "percent" | "fixed";
+  value: number;
+  scope: "all" | "category" | "products";
+  categoryId?: number;
+  productIds?: number[];
+  minSubtotal?: number;
+  startsAt?: string;
+  endsAt?: string;
+  active: boolean;
+  visibility: "public" | "hidden";
+  stackable?: boolean;
+  terms?: string;
 };
