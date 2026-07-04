@@ -224,7 +224,7 @@ textarea:focus-visible,
   border-radius: 9999px;
   background: #fff;
   border: 1.5px solid #e7d29a;
-  color: #862421;
+  color: #2563eb;
   font-weight: 800;
   font-size: .9rem;
   box-shadow: 0 4px 14px rgba(212, 175, 55, .18);
@@ -237,3 +237,95 @@ textarea:focus-visible,
 }
 .review-cta:focus-visible { outline: 2px solid #00509e; outline-offset: 2px; }
 .review-cta .stars { color: #f5b50a; letter-spacing: 1.5px; font-size: .8rem; }
+
+
+/* Wishlist heart pop on toggle */
+@keyframes wishPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.4); }
+  70% { transform: scale(.85); }
+  100% { transform: scale(1); }
+}
+.wish-pop { animation: wishPop .32s ease-in-out; }
+
+/* Cart icon pop when a fly-to-cart clone lands */
+@keyframes cartFlyHit {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.cart-fly-hit { animation: cartFlyHit .5s ease-out; transform-origin: 50% 55%; }
+
+/* Quick-view modal */
+.qv-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(17, 17, 17, .55);
+  animation: fadeUp .18s ease both;
+}
+.qv-panel {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: .9rem;
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .3);
+  animation: qvIn .22s cubic-bezier(.2, .7, .3, 1) both;
+}
+@keyframes qvIn {
+  from { opacity: 0; transform: translateY(12px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.qv-close {
+  position: absolute;
+  inset-inline-end: .6rem;
+  inset-block-start: .6rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  color: #444;
+  font-size: .95rem;
+  line-height: 1;
+  transition: background-color .15s, color .15s;
+}
+.qv-close:hover { background: #2563eb; color: #fff; }
+
+/* Sticky mobile buy bar */
+.sticky-buy-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  border-top: 1px solid var(--color-line, #e5e7eb);
+  background: rgba(255, 255, 255, .97);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, .1);
+  transform: translateY(110%);
+  transition: transform .28s cubic-bezier(.2, .7, .3, 1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.sticky-buy-bar.is-visible { transform: translateY(0); }
+
+/* GSAP scroll-reveal initial state */
+html[data-gsap-anim] [data-reveal],
+html[data-gsap-anim] [data-reveal-group] > *,
+html[data-gsap-anim] [data-reveal-pop] > * {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-nudge, .cart-badge-pulse, .wish-pop, .cart-fly-hit { animation: none; }
+  .qv-backdrop, .qv-panel { animation: none; }
+  .sticky-buy-bar { transition: none; }
+}

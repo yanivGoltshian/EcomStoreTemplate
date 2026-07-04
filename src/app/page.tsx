@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Hero from "@/components/Hero";
 import CategoryStrip from "@/components/CategoryStrip";
 import CouponBanner from "@/components/CouponBanner";
@@ -6,6 +7,9 @@ import PromoTiles from "@/components/PromoTiles";
 import ValueProps from "@/components/ValueProps";
 import ProductCarousel from "@/components/ProductCarousel";
 import ShareBar from "@/components/ShareBar";
+import CustomerVoices from "@/components/CustomerVoices";
+import FaqSection from "@/components/FaqSection";
+import { LineIcon } from "@/lib/lineIcons";
 import { homepage, getProductsByCategory, site } from "@/lib/data";
 
 export default function Home() {
@@ -25,6 +29,30 @@ export default function Home() {
       <PromoTiles tiles={homepage.promoTiles} />
       <ValueProps />
 
+      <section className="container-x mt-12" data-reveal>
+        <Link
+          href="/finder/"
+          className="finder-teaser group flex flex-col items-center gap-3 rounded-2xl border border-brand-gold/40 bg-white px-6 py-7 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:flex-row sm:justify-between sm:text-right"
+        >
+          <span className="flex items-center gap-4">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-red/10 text-brand-red">
+              <LineIcon name="compass" className="h-8 w-8" />
+            </span>
+            <span>
+              <span className="block text-lg font-extrabold text-heading md:text-xl">
+                לא בטוחים מה לבחור?
+              </span>
+              <span className="mt-1 block text-sm font-light text-muted">
+                ענו על כמה שאלות קצרות ונרכיב לכם המלצה אישית תוך שניות
+              </span>
+            </span>
+          </span>
+          <span className="shrink-0 rounded-full bg-brand-red px-6 py-2.5 text-sm font-bold text-white transition-colors group-hover:bg-brand-red-dark">
+            למצוא מוצר מתאים ←
+          </span>
+        </Link>
+      </section>
+
       {homepage.sections.map((s) => {
         const products = getProductsByCategory(s.categoryId).slice(0, s.limit);
         if (products.length === 0) return null;
@@ -40,7 +68,7 @@ export default function Home() {
       })}
 
       <section className="container-x mt-14">
-        <div className="share-band">
+        <div className="share-band" data-reveal>
           <h3 className="text-xl font-extrabold text-brand-red md:text-2xl">
             <span className="text-brand-gold">✦</span> אוהבים את {site.name}? ספרו לחברים
           </h3>
@@ -95,7 +123,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-14 stars-bg border-y-2 border-brand-gold text-white">
+      <CustomerVoices />
+      <FaqSection />
+
+      <section className="mt-14 stars-bg border-y-2 border-brand-gold text-white" data-reveal>
         <div className="container-x flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-5 text-center">
           <svg
             viewBox="0 0 24 24"

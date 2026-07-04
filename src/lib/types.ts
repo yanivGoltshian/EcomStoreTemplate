@@ -88,6 +88,13 @@ export type OpeningHours = {
   closes: string;
 };
 
+export type SiteReview = {
+  author: string;
+  text: string;
+  rating?: number;
+  source?: string;
+};
+
 export type SiteAddress = {
   street: string;
   streetEn: string;
@@ -122,6 +129,7 @@ export type Site = {
   facebook: string;
   instagram: string;
   googleReviewUrl?: string;
+  reviews?: SiteReview[];
   address: SiteAddress;
   hours: string;
   openingHours: OpeningHours[];

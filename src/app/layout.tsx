@@ -6,8 +6,12 @@ import SiteFooter from "@/components/SiteFooter";
 import ConditionalChrome from "@/components/ConditionalChrome";
 import ScrollToTop from "@/components/ScrollToTop";
 import PWARegister from "@/components/PWARegister";
+import ScrollReveal from "@/components/ScrollReveal";
+import QuickViewModal from "@/components/QuickViewModal";
 import InstallPrompt from "@/components/InstallPrompt";
 import { CartProvider } from "@/lib/cart";
+import { WishlistProvider } from "@/lib/wishlist";
+import { QuickViewProvider } from "@/lib/quickview";
 import { site } from "@/lib/data";
 
 const heebo = Heebo({
@@ -211,19 +215,31 @@ export default function RootLayout({
         } as React.CSSProperties
       }
     >
-      <body>
+      <body className="overflow-x-hidden">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.setAttribute('data-gsap-anim','')}}catch(e){}",
+          }}
+        />
         <ScrollToTop />
         <PWARegister />
+        <ScrollReveal />
         <StructuredData />
         <Analytics />
         <CartProvider>
-          <ConditionalChrome
-            header={<SiteHeader />}
-            footer={<SiteFooter />}
-          >
-            {children}
-          </ConditionalChrome>
-          <InstallPrompt />
+          <WishlistProvider>
+            <QuickViewProvider>
+              <ConditionalChrome
+                header={<SiteHeader />}
+                footer={<SiteFooter />}
+              >
+                {children}
+              </ConditionalChrome>
+              <InstallPrompt />
+              <QuickViewModal />
+            </QuickViewProvider>
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

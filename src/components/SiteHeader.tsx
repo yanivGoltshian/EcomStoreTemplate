@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import SearchAutocomplete from "./SearchAutocomplete";
 import { useCart } from "@/lib/cart";
+import { useWishlist } from "@/lib/wishlist";
 import { nav, site, waLink, telLink, wazeLink } from "@/lib/data";
 
 const socials = [
@@ -27,6 +28,7 @@ const socials = [
 
 export default function SiteHeader() {
   const { count } = useCart();
+  const { count: wishCount } = useWishlist();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSub, setOpenSub] = useState<number | null>(null);
 
@@ -82,10 +84,27 @@ export default function SiteHeader() {
           </div>
 
           <Link
-            href="/cart/"
-            className="ms-auto flex items-center gap-2 rounded-md px-2 py-2 text-sm font-bold text-ink hover:text-brand-red md:ms-0"
+            href="/wishlist/"
+            aria-label={wishCount > 0 ? `רשימת משאלות, ${wishCount} פריטים` : "רשימת משאלות"}
+            className="ms-auto grid h-9 w-9 place-items-center rounded-md text-ink transition-colors hover:text-brand-red md:ms-0"
           >
             <span className="relative grid h-9 w-9 place-items-center">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 20.3 4.7 13a4.6 4.6 0 0 1 6.5-6.5l.8.8.8-.8A4.6 4.6 0 0 1 19.3 13Z" />
+              </svg>
+              {wishCount > 0 && (
+                <span className="absolute -top-0.5 end-0 grid h-4 min-w-4 place-items-center rounded-full bg-brand-red px-1 text-[0.62rem] font-bold leading-none text-white">
+                  {wishCount}
+                </span>
+              )}
+            </span>
+          </Link>
+
+          <Link
+            href="/cart/"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm font-bold text-ink hover:text-brand-red"
+          >
+            <span id="cart-fly-target" className="relative grid h-9 w-9 place-items-center">
               <svg className={count > 0 ? "cart-nudge" : undefined} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="9" cy="20" r="1.4" />
                 <circle cx="17" cy="20" r="1.4" />
